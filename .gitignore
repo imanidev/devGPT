@@ -1,4 +1,4 @@
 .env
 .venv
-tutor.py
-dev.py
+.tutor.py
+.dev.py
