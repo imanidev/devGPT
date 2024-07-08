@@ -5,13 +5,11 @@ from dotenv import load_dotenv
 
 app = Flask(__name__)
 
-# Load environment variables from .env file
 load_dotenv()
 
-# Set the OpenAI API key
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
-# Define initial system messages
+
 messages = [
     {
         "role": "system",
@@ -23,7 +21,7 @@ messages = [
     }
 ]
 
-# Function to interact with the assistant
+
 def interact_with_assistant(messages):
     try:
         response = openai.ChatCompletion.create(
@@ -44,16 +42,14 @@ def handle_message():
         content = request.json.get('message', '').strip()
 
         if content:
-            # Append user's message to messages list
             messages.append({
                 "role": "user",
                 "content": content
             })
 
-            # Get AI response
+            # Get response
             response_message = interact_with_assistant(messages)
 
-            # Append AI's response to messages list
             messages.append({
                 "role": "assistant",
                 "content": response_message
