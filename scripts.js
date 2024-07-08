@@ -15,7 +15,7 @@ function sendMessage() {
     appendMessage("user", message);
     messageInput.value = "";
 
-    // Send message to backend
+
     fetch("/", {
       method: "POST",
       headers: {
