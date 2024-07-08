@@ -34,5 +34,5 @@ function sendMessage() {
 
 // Initial message to start conversation
 document.addEventListener("DOMContentLoaded", function () {
-  appendMessage("assistant", "Hi Imani, how may I help you?");
+  appendMessage("assistant", "Hi, how may I help you?");
 });
