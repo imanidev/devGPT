@@ -33,32 +33,40 @@ def interact_with_assistant(messages):
         )
         return response['choices'][0]['message']['content']
     except openai.OpenAIError as e:
-        return f"Error: {e}"
+        # Log the exception (consider using a logging library for production)
+        print(f"Exception occurred: {e}")
+        return "An error occurred while processing your request."
 
 # Route to handle incoming messages from the frontend
 @app.route('/', methods=['POST'])
 def handle_message():
-    content = request.json['message']
+    try:
+        content = request.json.get('message', '').strip()
 
-    if content.strip():
-        # Append user's message to messages list
-        messages.append({
-            "role": "user",
-            "content": content
-        })
+        if content:
+            # Append user's message to messages list
+            messages.append({
+                "role": "user",
+                "content": content
+            })
 
-        # Get AI response
-        response_message = interact_with_assistant(messages)
+            # Get AI response
+            response_message = interact_with_assistant(messages)
 
-        # Append AI's response to messages list
-        messages.append({
-            "role": "assistant",
-            "content": response_message
-        })
+            # Append AI's response to messages list
+            messages.append({
+                "role": "assistant",
+                "content": response_message
+            })
 
-        return jsonify({"message": response_message}), 200
-    else:
-        return jsonify({"error": "Empty message"}), 400
+            return jsonify({"message": response_message}), 200
+        else:
+            return jsonify({"error": "Empty message"}), 400
+
+    except Exception as e:
+        # Log the exception (consider using a logging library for production)
+        print(f"Exception occurred: {e}")
+        return jsonify({"error": "An error occurred while processing your request."}), 500
 
 # Route to serve the main page
 @app.route('/')
